@@ -1,33 +1,20 @@
 package ml.combust.mleap.core.feature
 
+import ca.mrvisser.sealerate
 import ml.combust.mleap.core.Model
 import ml.combust.mleap.core.types.{ScalarType, StructType}
 
-sealed trait HandleInvalid {
-  def asParamString: String
+
+sealed trait HandleInvalid extends EnumStringParam {
+  def fromString(value: String): HandleInvalid = find(value, sealerate.values[HandleInvalid])
 }
 
 object HandleInvalid {
   val default = Error
 
-  case object Error extends HandleInvalid {
-    override def asParamString: String = "error"
-  }
-
-  case object Skip extends HandleInvalid {
-    override def asParamString: String = "skip"
-  }
-
-  case object Keep extends HandleInvalid {
-    override def asParamString: String = "keep"
-  }
-
-  def fromString(value: String): HandleInvalid = value match {
-    case "error" => HandleInvalid.Error
-    case "skip" => HandleInvalid.Skip
-    case "keep" => HandleInvalid.Keep
-    case _ => throw new IllegalArgumentException(s"Invalid handler: $value")
-  }
+  case object Error extends HandleInvalid
+  case object Skip extends HandleInvalid
+  case object Keep extends HandleInvalid
 }
 
 /** Class for string indexer model.

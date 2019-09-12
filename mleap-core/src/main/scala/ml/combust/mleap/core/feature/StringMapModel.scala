@@ -3,27 +3,20 @@ package ml.combust.mleap.core.feature
 import ml.combust.mleap.core.Model
 import ml.combust.mleap.core.types.{ScalarType, StructType}
 
-sealed trait StringMapHandleInvalid {
-  def asParamString: String
+import language.experimental.macros
+import ca.mrvisser.sealerate
+
+
+sealed trait StringMapHandleInvalid extends EnumStringParam {
+  def fromString(value: String): StringMapHandleInvalid = find(value, sealerate.values[StringMapHandleInvalid])
 }
 
 object StringMapHandleInvalid {
   val default = Error
   val defaultValue = 0.0
 
-  case object Error extends StringMapHandleInvalid {
-    override def asParamString: String = "error"
-  }
-
-  case object Keep extends StringMapHandleInvalid {
-    override def asParamString: String = "keep"
-  }
-
-  def fromString(value: String): StringMapHandleInvalid = value match {
-    case "error" => StringMapHandleInvalid.Error
-    case "keep" => StringMapHandleInvalid.Keep
-    case _ => throw new IllegalArgumentException(s"Invalid handler: $value")
-  }
+  case object Error extends StringMapHandleInvalid
+  case object Keep extends StringMapHandleInvalid
 }
 
 /** Class for string map model.

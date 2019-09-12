@@ -40,6 +40,7 @@ object Dependencies {
       "org.tensorflow" % "libtensorflow" % tensorflowVersion,
       "org.tensorflow" % "libtensorflow_jni" % tensorflowVersion
     )
+    val sealerate = "ca.mrvisser" %% "sealerate" % "0.0.5"
 
     val akkaTestKit = "com.typesafe.akka" %% "akka-testkit" % akkaVersion
     val akkaStreamTestKit = "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion
@@ -98,7 +99,7 @@ object Dependencies {
 
   val base = l ++= Seq()
 
-  val core = l ++= Seq(sparkMllibLocal, jTransform, Test.scalaTest)
+  val core = l ++= Seq(sparkMllibLocal, jTransform, Test.scalaTest, sealerate)
 
   def runtime(scalaVersion: SettingKey[String]) = l ++= (Seq(Test.scalaTest, Test.junit, Test.junitInterface, commonsIo) ++ scalaReflect.modules(scalaVersion.value))
 
